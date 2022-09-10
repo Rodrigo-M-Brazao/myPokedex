@@ -1,30 +1,36 @@
 let requestName = new XMLHttpRequest();
-
+let pokedexNumber = prompt('Quantos pokemons você quer ver na pokedex?');
 let jsonPokedex;
-
 let pokemonNumber;
 let pokemonIndex;
 
-//Transformando o texto em JSON para pegar os nomes dos pokemons via JSON
-requestName.addEventListener('readystatechange', ()=>{
-    if(requestName.readyState === 4 && requestName.status === 200){
-        jsonPokedex = JSON.parse(requestName.responseText);
+let pokemonAcc = '';
+// https://pokeapi.glitch.me/v1/pokemon/1
 
-        writeNames();
-        
+let contentPokedex = document.querySelector("#content-pokedex");
+
+//Transformando o texto em JSON para pegar os nomes dos pokemons via JSON
+requestName.addEventListener('readystatechange', ()=> {
+    if(requestName.readyState === 4 && requestName.status === 200){
+        jsonPokedex = JSON.parse(requestName.responseText);        
+        writeNames();        
     }
 })
 
-//Abrindo o request de nomes
-requestName.open("get", "https://pokeapi.co/api/v2/pokemon?limit=251&offset=0s", true);
+//Abrindo o request de nome
+requestName.open("get", `https://pokeapi.co/api/v2/pokemon?limit=${pokedexNumber}&offset=0`, true);
 requestName.send();
+
 
 // Função que escreve os nomes dos pokemons
 const writeNames = () => {
-    for(let i = 0; i < jsonPokedex['results'].length; i++){
-        pokemonNumber = (i+1).toLocaleString('pt-BR', {minimumIntegerDigits: 3});
-        pokemonIndex = ` ${pokemonNumber} - ${jsonPokedex['results'][i].name}<br>`
-        document.write(pokemonIndex);
+    let jsonPokedexResults = jsonPokedex['results'];
+    for(let i = 0; i < jsonPokedexResults.length; i++){
+        let number = i+1;
+        pokemonNumber = (number).toLocaleString('pt-BR', {minimumIntegerDigits: 3});
+        
+        pokemonIndex = `<div style = "text-align:center;display:inline-block;"><img class= "card-img" alt = "${jsonPokedexResults[i].name}" src= "https://cdn.traction.one/pokedex/pokemon/${number}.png" style = "max-width:200px;max-height:200px;"><br> ${pokemonNumber} - ${jsonPokedexResults[i].name}</div>`
+        pokemonAcc += pokemonIndex;
     }
-
+    contentPokedex.innerHTML = pokemonAcc;
 }
