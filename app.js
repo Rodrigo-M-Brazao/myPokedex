@@ -29,7 +29,7 @@ const writeNames = () => {
         let number = i+1;
         pokemonNumber = (number).toLocaleString('pt-BR', {minimumIntegerDigits: 3});
         
-        pokemonIndex = `<div style = "text-align:center;display:inline-block;"><img class= "card-img" alt = "${jsonPokedexResults[i].name}" src= "https://cdn.traction.one/pokedex/pokemon/${number}.png" style = "max-width:200px;max-height:200px;"><br> ${pokemonNumber} - ${jsonPokedexResults[i].name}</div>`
+        pokemonIndex = `<div class = "pokemon-card"><img class= "card-img" alt = "${jsonPokedexResults[i].name}" src= "https://cdn.traction.one/pokedex/pokemon/${number}.png" ><br> ${pokemonNumber} - ${(jsonPokedexResults[i].name).toUpperCase()}</div>`
         pokemonAcc += pokemonIndex;
     }
     contentPokedex.innerHTML = pokemonAcc;
